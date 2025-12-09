@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FurniOnlineStoreApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(FurniOnlineStoreApplication.class, args);
 	}
 
