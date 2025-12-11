@@ -3,6 +3,7 @@ package az.edu.itbrains.furni_online_store.services;
 import az.edu.itbrains.furni_online_store.dtos.ProductDto;
 import az.edu.itbrains.furni_online_store.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
 
     public List<ProductDto> getAllProducts() {
-        List<ProductDto> productDtoList=
+//        List<ProductDto> productDtoList=
         return List.of();
     }
 }
