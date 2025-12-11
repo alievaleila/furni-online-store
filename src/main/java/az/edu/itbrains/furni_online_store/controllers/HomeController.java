@@ -1,12 +1,24 @@
 package az.edu.itbrains.furni_online_store.controllers;
 
+import az.edu.itbrains.furni_online_store.dtos.ProductDto;
+import az.edu.itbrains.furni_online_store.services.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
+
+    private final ProductService productService;
+
     @GetMapping("/")
-    public String index(){
+    public String index(Model model){
+        List<ProductDto> productDtoList=productService.getAllProducts();
+        model.addAttribute("products",productDtoList);
         return "index.html";
     }
 
@@ -49,6 +61,4 @@ public class HomeController {
     public String thankyou(){
         return "thankyou.html";
     }
-
-
 }
