@@ -1,7 +1,8 @@
-package az.edu.itbrains.furni_online_store.services;
+package az.edu.itbrains.furni_online_store.services.impl;
 
 import az.edu.itbrains.furni_online_store.dtos.ProductDto;
 import az.edu.itbrains.furni_online_store.repositories.ProductRepository;
+import az.edu.itbrains.furni_online_store.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
