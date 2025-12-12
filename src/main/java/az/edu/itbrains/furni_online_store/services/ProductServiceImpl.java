@@ -7,16 +7,19 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService{
+
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
-    @Override
 
+    @Override
     public List<ProductDto> getAllProducts() {
-//        List<ProductDto> productDtoList=
-        return List.of();
+        List<ProductDto> productDtoList= productRepository.findAll().stream()
+                .map(product -> modelMapper.map(product,ProductDto.class)).collect(Collectors.toList());
+        return productDtoList;
     }
 }
