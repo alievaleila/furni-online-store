@@ -36,7 +36,10 @@ build/
 Thumbs.db
 desktop.ini
 *.log
-.mvn/wrapper/maven-wrapper.jar
 auth.txt
 .env
 *.key
+.mvn/wrapper/
+mvnw
+mvnw.cmd
+.gitattributes

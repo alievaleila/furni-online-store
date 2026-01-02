@@ -40,9 +40,28 @@ public class CartController {
 
 
     @PostMapping("/delete")
-    public String delete(){
+    public String delete(@RequestParam Long productId, Principal principal){
+        if(principal==null){
+            return "redirect:/login";
+        }
 
+        String username=principal.getName();
+        cartService.deleteItem(username,productId);
+        return "redirect:/cart";
     }
+
+    @PostMapping("/update")
+    public String update(@RequestParam Long productId, String action, Principal principal){
+        if(principal==null){
+            return "redirect:/login";
+        }
+
+        String username=principal.getName();
+        cartService.updateQuantity(username,productId);
+        return "redirect:/cart";
+    }
+
+
 
 
 }
