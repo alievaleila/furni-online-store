@@ -17,25 +17,23 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="cart")
+@Table(name = "cart")
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String imageUrl;
-    private String name;
+    private String username;
     private Double price;
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name="product_id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
-
-
 
 
 }

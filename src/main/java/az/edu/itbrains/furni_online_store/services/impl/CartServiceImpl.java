@@ -49,6 +49,14 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void decreaseQuantity(String username, Long productId) {
-
+        Cart item = cartRepository.findByUsernameAndProductId(username, productId);
+        if (item != null) {
+            if (item.getQuantity() > 1) {
+                item.setQuantity(item.getQuantity() - 1);
+                cartRepository.save(item);
+            } else {
+                cartRepository.delete(item);
+            }
+        }
     }
 }

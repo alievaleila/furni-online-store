@@ -31,12 +31,12 @@ public class CartController {
         return "cart";
     }
 
-    @PostMapping("/cart/add")
-    public String addToCart(@RequestParam Long productId, Principal principal) {
-        if (principal == null) {
-            return "redirect:/login";
-        }
-    }
+//    @PostMapping("/cart/add")
+//    public String addToCart(@RequestParam Long productId, Principal principal) {
+//        if (principal == null) {
+//            return "redirect:/login";
+//        }
+//    }
 
 
     @PostMapping("/delete")
