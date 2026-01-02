@@ -19,7 +19,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<CartItemDto> getCartItemByUsername(String username) {
-        List<Cart> carts = cartRepository.findByUserUsername(username);
+        List<Cart> carts = cartRepository.findByUsername(username);
 
         return carts.stream()
                 .map(cart -> new CartItemDto(
@@ -38,5 +38,23 @@ public class CartServiceImpl implements CartService {
         return cartItemDtoList.stream()
                 .mapToDouble(item->item.getPrice() * item.getQuantity())
                 .sum();
+    }
+
+    @Override
+    public void deleteItem(String username, Long productId) {
+        Cart item=cartRepository.findByUsernameAndProductId(username,productId);
+        if(item!=null){
+            cartRepository.delete(item);
+        }
+    }
+
+    @Override
+    public void increaseQuantity(String username, Long productId) {
+
+    }
+
+    @Override
+    public void decreaseQuantity(String username, Long productId) {
+
     }
 }
