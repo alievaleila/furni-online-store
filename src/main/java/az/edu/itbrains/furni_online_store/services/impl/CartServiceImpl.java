@@ -21,36 +21,30 @@ public class CartServiceImpl implements CartService {
     public List<CartItemDto> getCartItemByUsername(String username) {
         List<Cart> carts = cartRepository.findByUsername(username);
 
-        return carts.stream()
-                .map(cart -> new CartItemDto(
-                        cart.getId(),
-                        cart.getProduct().getImageUrl(),
-                        cart.getProduct().getName(),
-                        cart.getProduct().getPrice(),
-                        cart.getQuantity()
-                ))
-                .toList();
+        return carts.stream().map(cart -> new CartItemDto(cart.getId(), cart.getProduct().getImageUrl(), cart.getProduct().getName(), cart.getProduct().getPrice(), cart.getQuantity())).toList();
     }
 
 
     @Override
     public double calculateSubtotal(List<CartItemDto> cartItemDtoList) {
-        return cartItemDtoList.stream()
-                .mapToDouble(item->item.getPrice() * item.getQuantity())
-                .sum();
+        return cartItemDtoList.stream().mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
     }
 
     @Override
     public void deleteItem(String username, Long productId) {
-        Cart item=cartRepository.findByUsernameAndProductId(username,productId);
-        if(item!=null){
+        Cart item = cartRepository.findByUsernameAndProductId(username, productId);
+        if (item != null) {
             cartRepository.delete(item);
         }
     }
 
     @Override
     public void increaseQuantity(String username, Long productId) {
-
+        Cart item = cartRepository.findByUsernameAndProductId(username, productId);
+        if (item != null) {
+            item.setQuantity(item.getQuantity());
+            cartRepository.save(item);
+        }
     }
 
     @Override
