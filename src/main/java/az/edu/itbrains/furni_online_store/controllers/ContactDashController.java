@@ -21,4 +21,9 @@ public class ContactDashController {
         model.addAttribute("contacts", contactDashDtoList);
         return "/dashboard/contact/index.html";
     }
+
+    @GetMapping("/admin/contact/create")
+    public String create() {
+        return "/dashboard/admin/create.html";
+    }
 }
