@@ -64,11 +64,11 @@ public class CartController {
         return "redirect:/cart";
     }
 
-    @PostMapping("/apply-coupon")
-    public String applyCoupon(){
-
-
-    }
+//    @PostMapping("/apply-coupon")
+//    public String applyCoupon(){
+//
+//
+//    }
 
 
 }
