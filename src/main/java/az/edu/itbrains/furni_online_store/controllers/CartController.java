@@ -15,6 +15,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class CartController {
+
     private final CartService cartService;
 
     @GetMapping("/cart")
@@ -22,7 +23,6 @@ public class CartController {
         if (principal == null) {
             return "redirect:/login";
         }
-
         String username = principal.getName();
         List<CartItemDto> cartItemDtoList = cartService.getCartItemByUsername(username);
         double subtotal = cartService.calculateSubtotal(cartItemDtoList);
@@ -31,13 +31,16 @@ public class CartController {
         return "cart";
     }
 
-//    @PostMapping("/cart/add")
-//    public String addToCart(@RequestParam Long productId, Principal principal) {
-//        if (principal == null) {
-//            return "redirect:/login";
-//        }
-//    }
+    @PostMapping("/cart/add")
+    public String addToCart(@RequestParam Long productId, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        String username = principal.getName();
+        cartService.addToCart(username, productId);
+        return "redirect:/cart";
 
+    }
 
     @PostMapping("/delete")
     public String delete(@RequestParam Long productId, Principal principal) {
@@ -47,7 +50,10 @@ public class CartController {
     }
 
     @PostMapping("/update")
-    public String update(@RequestParam Long productId, String action, Principal principal) {
+    public String update(@RequestParam Long productId, @RequestParam String action, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
         String username = principal.getName();
 
         if (action.equals("increase")) {

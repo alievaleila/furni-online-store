@@ -26,52 +26,68 @@
     <!-- End Hero Section -->
 
 
-
     <div class="untree_co-section before-footer-section">
         <div class="container">
             <div class="row mb-5">
-                <form class="col-md-12" method="post">
-                    <div class="site-blocks-table">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th class="product-thumbnail">Image</th>
-                                <th class="product-name">Product</th>
-                                <th class="product-price">Price</th>
-                                <th class="product-quantity">Quantity</th>
-                                <th class="product-total">Total</th>
-                                <th class="product-remove">Remove</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="item : ${cartItems} ">
-                                <td class="product-thumbnail">
-                                    <img th:src="${item.imageUrl}" alt="Image" class="img-fluid">
-                                </td>
-                                <td class="product-name">
-                                    <h2 th:text="${item.name}" class="h5 text-black">Product 1</h2>
-                                </td>
-                                <td th:text="${item.price}">$49.00</td>
-                                <td>
-                                    <div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
-                                        <div class="input-group-prepend">
-                                            <button class="btn btn-outline-black decrease" type="button">&minus;</button>
-                                        </div>
-                                        <input type="text" class="form-control text-center quantity-amount" th:value="${item.quantity}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-black increase" type="button">&plus;</button>
-                                        </div>
-                                    </div>
+                <div class="site-blocks-table">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="product-thumbnail">Image</th>
+                            <th class="product-name">Product</th>
+                            <th class="product-price">Price</th>
+                            <th class="product-quantity">Quantity</th>
+                            <th class="product-total">Total</th>
+                            <th class="product-remove">Remove</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="cartItem:${cartItems}">
+                            <td class="product-thumbnail">
+                                <img th:src="${cartItem.imageUrl}" alt="Image" class="img-fluid">
+                            </td>
+                            <td class="product-name">
+                                <h2 th:text="${cartItem.name}" class="h5 text-black">Product 1</h2>
+                            </td>
+                            <td th:text="${cartItem.price}">$49.00</td>
+                            <td>
+                                <div class="input-group align-items-center" style="max-width:120px">
+                                    <!-- Decrease button -->
+                                    <form th:action="@{/update}" method="post" class="input-group-prepend m-0">
+                                        <input type="hidden" name="productId" th:value="${cartItem.productId}"/>
+                                        <input type="hidden" name="action" value="decrease"/>
+                                        <button type="submit" class="btn btn-outline-black">&minus;</button>
+                                    </form>
 
-                                </td>
-                                <td>$49.00</td>
-                                <td><a href="#" class="btn btn-black btn-sm">X</a></td>
-                            </tr>
+                                    <!-- Quantity display -->
+                                    <input class="form-control text-center" type="text" th:value="${cartItem.quantity}"
+                                           readonly style="max-width:55px"/>
 
-                            </tbody>
-                        </table>
-                    </div>
-                </form>
+                                    <!-- Increase button -->
+                                    <form th:action="@{/update}" method="post" class="input-group-append m-0">
+                                        <input type="hidden" name="productId" th:value="${cartItem.productId}"/>
+                                        <input type="hidden" name="action" value="increase"/>
+                                        <button type="submit" class="btn btn-outline-black">&plus;</button>
+                                    </form>
+
+
+                                </div>
+
+                            </td>
+                            <td th:text="'$' + ${cartItem.total}">$49.00</td>
+                            <td>
+                                <form th:action="@{/delete}" method="post" class="m-0">
+                                    <input type="hidden" name="productId" th:value="${cartItem.productId}"/>
+
+                                    <button class="btn btn-black btn-sm" type="submit">X</button>
+                                </form>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="row">
@@ -89,12 +105,14 @@
                             <label class="text-black h4" for="coupon">Coupon</label>
                             <p>Enter your coupon code if you have one.</p>
                         </div>
-                        <div class="col-md-8 mb-3 mb-md-0">
-                            <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
-                        </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-black">Apply Coupon</button>
-                        </div>
+
+                        <form th:action="@{/apply-coupon}" method="post">
+                            <input type="text" name="couponCode" class="border-0 border-bottom rounded me-5 py-3 mb-4"
+                                   placeholder="Coupon Code">
+                            <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="submit">Apply
+                                Coupon
+                            </button>
+                        </form>
                     </div>
                 </div>
                 <div class="col-md-6 pl-5">
@@ -110,21 +128,38 @@
                                     <span class="text-black">Subtotal</span>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <strong class="text-black">$230.00</strong>
+                                    <strong
+                                            th:text="${#numbers.formatDecimal(cartTotal, 1, 'COMMA', 2, 'POINT')} + ' ₼'"
+                                            class="text-black">
+                                    </strong>
                                 </div>
                             </div>
-                            <div class="row mb-5">
+                            <div class="row mb-5" th:if="${session.appliedCoupon != null}">
                                 <div class="col-md-6">
-                                    <span class="text-black">Total</span>
+                                 <span class="text-black">
+                                                      Total
+                                         (<span th:text="${session.appliedCoupon.code}"></span>
+                                        - <span th:text="${session.appliedCoupon.discountPercentage}"></span>%)
+                                  </span>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <strong class="text-black">$230.00</strong>
+                                    <strong class="text-black"
+                                            th:text="${
+                                     #numbers.formatDecimal(
+                                    cartTotal - (cartTotal * session.appliedCoupon.discountPercentage / 100),
+                                      1,'COMMA',2,'POINT'
+                                                 )
+                                                  } + ' ₼'">
+                                    </strong>
                                 </div>
                             </div>
 
+
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='checkout.html'">Proceed To Checkout</button>
+                                    <button class="btn btn-black btn-lg py-3 btn-block"
+                                            onclick="window.location='checkout.html'">Proceed To Checkout
+                                    </button>
                                 </div>
                             </div>
                         </div>
