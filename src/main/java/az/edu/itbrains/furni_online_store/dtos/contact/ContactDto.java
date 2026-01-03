@@ -1,4 +1,4 @@
-package az.edu.itbrains.furni_online_store.dtos;
+package az.edu.itbrains.furni_online_store.dtos.contact;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContactDto {
+
     private Long id;
     private String firstName;
     private String lastName;
